@@ -2,7 +2,6 @@ import {Actions, InterfaceTeam} from "../index";
 import {InterfaceActionAddStats, InterfaceActionAddTeams} from "./actions";
 
 export const teamsReducer = (state: InterfaceTeam[] = [], action: InterfaceActionAddTeams | InterfaceActionAddStats) => {
-    console.log('reducer', state);
     switch (action.type) {
         case Actions.ADD_TEAMS:
             return [...state, ...action.teams];

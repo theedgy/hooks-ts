@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useLayoutEffect, useReducer} from 'react';
+import React, {ReactNode, useReducer} from 'react';
 
 import {InterfaceActionAddStats, InterfaceActionAddTeams} from "./teams/actions";
 import {InterfaceActionSetCurrent} from "./current/actions";
@@ -52,7 +52,7 @@ export type InterfaceState = {
 
 export interface InterfaceAppContext {
     state: InterfaceState,
-    dispatch: (func: { teamId: number; type: Actions }) => void,
+    dispatch: (e: Action) => void,
 }
 
 export const AppContext = React.createContext<Partial<InterfaceAppContext>>({});
@@ -62,13 +62,6 @@ export const AppStore: React.FC<InterfaceAppStore> = ({children}) => {
         teams: teamsReducer,
         current: currentReducer
     }), {});
-
-    useEffect(() => {
-        if (!!state.teams) {
-            return
-        }
-        console.log('SĄ')
-    });
 
     return (
         <AppContext.Provider value={{state, dispatch}}>

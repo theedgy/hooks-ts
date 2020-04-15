@@ -22,7 +22,6 @@ export const Teams = () => {
         if ((teams && !!teams.length) || status === 'success') {
             return;
         }
-        console.log('get', teams, teams?.length, status);
 
         setStatus('loading');
 
@@ -39,7 +38,6 @@ export const Teams = () => {
         // eslint-disable-next-line
     }, [teams]);
 
-        console.log('render', teams, teams?.length, status);
     return (
         <section className="Teams app-panel">
             <h2>Teams</h2>
