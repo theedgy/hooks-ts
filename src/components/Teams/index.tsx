@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { apiConnection } from '../../services/apiConnection';
-import { addTeams } from '../../store/teams/actions';
-import { Error } from '../Error';
-import { Loading } from '../Loading';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {apiConnection} from '../../services/apiConnection';
+import {addTeams} from '../../store/teams/actions';
+import {Error} from '../Error';
+import {Loading} from '../Loading';
 import './index.scss';
 import Team from './components/Team';
 
 const defaultStatus = 'idle';
 
-const Teams = ({ state: { teams, current }, onAddTeams }) => {
+const Teams = ({state: {teams, current}, onAddTeams}) => {
     const [status, setStatus] = useState(defaultStatus);
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const Teams = ({ state: { teams, current }, onAddTeams }) => {
     );
 };
 
-const mapStateToProps = state => ({ state });
+const mapStateToProps = state => ({state});
 
 const mapDispatchToProps = dispatch => ({
     onAddTeams: teams => dispatch(addTeams(teams)),

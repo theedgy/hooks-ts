@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { apiConnection } from '../apiConnection';
+import {useEffect, useState} from 'react';
+import {apiConnection} from '../apiConnection';
 
 const defaultStatus = 'idle';
 
@@ -27,5 +27,5 @@ export const useApi = (endpoint, data = null) => {
         endpoint, data,
     ]);
 
-    return { response, status };
+    return {response, status};
 };

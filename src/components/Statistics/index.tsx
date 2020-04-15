@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { apiConnection } from '../../services/apiConnection';
-import { addTeamStats } from '../../store/teams/actions';
-import { Loading } from '../Loading';
+import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux';
+import {apiConnection} from '../../services/apiConnection';
+import {addTeamStats} from '../../store/teams/actions';
+import {Loading} from '../Loading';
 
 import './index.scss';
 
-const Statistics = ({ state: { teams, current }, onAddTeamStats }) => {
+const Statistics = ({state: {teams, current}, onAddTeamStats}) => {
     const [status, setStatus] = useState('idle');
     const currentFound = !!teams.length && current &&
         teams.find(team => team.id === current);
@@ -80,7 +80,7 @@ const Statistics = ({ state: { teams, current }, onAddTeamStats }) => {
     );
 };
 
-const mapStateToProps = state => ({ state });
+const mapStateToProps = state => ({state});
 
 const mapDispatchToProps = dispatch => ({
     onAddTeamStats: (stats, id) => dispatch(addTeamStats(stats, id)),
