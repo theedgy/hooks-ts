@@ -1,40 +1,45 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
+import React, {useContext, useEffect, useState} from 'react';
 import {apiConnection} from '../../services/apiConnection';
-import {addTeams} from '../../store/teams/actions';
 import {Error} from '../Error';
 import {Loading} from '../Loading';
 import './index.scss';
-import Team from './components/Team';
+import {AppContext} from "../../store";
+import {Team} from "./components/Team";
+import {addTeams} from "../../store/teams/actions";
 
 const defaultStatus = 'idle';
 
-const Teams = ({state: {teams, current}, onAddTeams}) => {
-    const [status, setStatus] = useState(defaultStatus);
+export const Teams = () => {
+    const {state, dispatch} = useContext(AppContext);
+
+    const teams = state?.teams;
+
+    const [status, setStatus] = useState<string>(defaultStatus);
+    const current: number = 0;
 
     useEffect(() => {
-        if (teams.length > 0) {
+        // Return if data exists in store or is already pulling
+        if ((teams && !!teams.length) || status === 'success') {
             return;
         }
+        console.log('get', teams, teams?.length, status);
 
         setStatus('loading');
 
-        apiConnection('competitions/2021/teams').then(r => {
-            if (!r.ok) {
-                setStatus(`Error (${r.type}): ${r.statusText}`);
-                return;
-            }
-
-            return r.json();
-        }).then(r => {
-                onAddTeams(r.teams);
-                setStatus(defaultStatus);
-            },
-        ).catch(error => setStatus(`${error}`));
+        apiConnection('competitions/2021/teams')
+            .then(r => r.json())
+            .then(response => {
+                    if (!!dispatch) {
+                        dispatch(addTeams(response.teams));
+                        setStatus('success');
+                    }
+                },
+            ).catch(error => setStatus(`${error}`));
 
         // eslint-disable-next-line
     }, [teams]);
 
+        console.log('render', teams, teams?.length, status);
     return (
         <section className="Teams app-panel">
             <h2>Teams</h2>
@@ -42,25 +47,18 @@ const Teams = ({state: {teams, current}, onAddTeams}) => {
             {(status === 'loading') &&
             <Loading message="Loading Teams..." />}
 
-            {!['idle', 'loading'].includes(status) && (
+            {!['idle', 'loading', 'success'].includes(status) && (
                 <Error message={status} />
             )}
 
             <div className="Team__list">
-                {!!teams.length && teams.map(team => (
+                {!!teams?.length && teams.map(team => (
                     <Team key={team.id}
                           team={team}
-                          current={current === team.id} />
+                          current={current === team.id}
+                    />
                 ))}
             </div>
         </section>
     );
 };
-
-const mapStateToProps = state => ({state});
-
-const mapDispatchToProps = dispatch => ({
-    onAddTeams: teams => dispatch(addTeams(teams)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Teams);

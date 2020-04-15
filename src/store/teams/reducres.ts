@@ -1,16 +1,19 @@
-import {ADD_TEAM_STATS, ADD_TEAMS} from './actions';
+import {Actions, InterfaceTeam} from "../index";
+import {InterfaceActionAddStats, InterfaceActionAddTeams} from "./actions";
 
-export const teams = (state = [], action) => {
-    console.log(state, action);
+export const teamsReducer = (state: InterfaceTeam[] = [], action: InterfaceActionAddTeams | InterfaceActionAddStats) => {
+    console.log('reducer', state);
     switch (action.type) {
-        case ADD_TEAMS:
+        case Actions.ADD_TEAMS:
             return [...state, ...action.teams];
 
-        case ADD_TEAM_STATS:
+        case Actions.ADD_TEAM_STATS:
             const newState = [...state];
-            console.log('ADD_TEAM_STATS', newState);
             const found = newState.find(team => team.id === action.id);
-            console.log('ADD_TEAM_STATS', found);
+            if (!found) {
+                return state;
+            }
+            // @ts-ignore
             found['stats'] = action.stats;
             return newState;
 

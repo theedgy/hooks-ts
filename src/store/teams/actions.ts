@@ -1,13 +1,23 @@
-export const ADD_TEAM_STATS = 'ADD_TEAM_STATS';
-export const ADD_TEAMS = 'ADD_TEAMS';
+import {Actions, InterfaceStat, InterfaceTeam} from "../index";
 
-export const addTeamStats = (stats, id) => ({
-    type: ADD_TEAM_STATS,
+export interface InterfaceActionAddTeams {
+    type: Actions.ADD_TEAMS,
+    teams: InterfaceTeam[]
+}
+
+export interface InterfaceActionAddStats {
+    type: Actions.ADD_TEAM_STATS,
+    stats: InterfaceStat[],
+    id: number
+}
+
+export const addTeamStats = (stats: InterfaceStat[], id: number): InterfaceActionAddStats => ({
+    type: Actions.ADD_TEAM_STATS,
     stats,
     id
 });
 
-export const addTeams = teams => ({
-    type: ADD_TEAMS,
+export const addTeams = (teams: InterfaceTeam[]): InterfaceActionAddTeams => ({
+    type: Actions.ADD_TEAMS,
     teams,
 });

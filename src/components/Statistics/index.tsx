@@ -1,70 +1,77 @@
-import React, {useEffect, useState} from 'react';
-import {connect} from 'react-redux';
+import React, {useContext, useEffect, useState} from 'react';
 import {apiConnection} from '../../services/apiConnection';
 import {addTeamStats} from '../../store/teams/actions';
 import {Loading} from '../Loading';
 
 import './index.scss';
+import {AppContext, InterfaceTeam} from "../../store";
 
-const Statistics = ({state: {teams, current}, onAddTeamStats}) => {
+export const Statistics = () => {
     const [status, setStatus] = useState('idle');
-    const currentFound = !!teams.length && current &&
+    const {state, dispatch} = useContext(AppContext);
+    let foundTeam: InterfaceTeam | null = null;
+
+    const current = state?.current;
+    const teams = state?.teams;
+
+    const found = (!!teams?.length && current) &&
         teams.find(team => team.id === current);
+
+    if (found) {
+        foundTeam = found;
+    }
 
     useEffect(() => {
         if (!current) {
             return;
         }
 
-        if (teams.length === 0) {
+        if (!teams) {
             setStatus('loading');
             return;
         }
 
-        if (!!teams.length && 'stats' in currentFound) {
+        if (!!teams.length && foundTeam && 'stats' in foundTeam) {
             return;
         }
 
         setStatus('loading');
 
-        apiConnection(`teams/${current}/matches?status=FINISHED`).then(r => {
-            if (!r.ok) {
-                setStatus(`(${r.type}): ${r.statusText}`);
-                return;
-            }
+        apiConnection(`teams/${current}/matches?status=FINISHED`)
+            .then(r => r.json())
+            .then(r => {
+                    if (!!dispatch) {
+                        dispatch(addTeamStats(r.matches, current));
+                        setStatus('idle');
+                    }
+                },
+            ).catch(error => setStatus(`${error}`));
 
-            return r.json();
-        }).then(r => {
-                onAddTeamStats(r.matches, current);
-                setStatus('idle');
-            },
-        ).catch(error => setStatus(`${error}`));
-
-    }, [teams, current, currentFound]);
+    }, [teams, current, foundTeam]);
 
     return (
         <div className="Statistics app-panel">
-            <h2>Statistics {!!teams.length && currentFound && 'stats' in
-            currentFound && `for ${currentFound.name}`}</h2>
+            <h2>Statistics {!!teams?.length && foundTeam && 'stats' in
+            foundTeam && `for ${foundTeam.name}`}</h2>
 
-            {teams.length === 0 &&
+            {teams?.length === 0 &&
             <Loading message={'Waiting for teams load'} />}
 
             {status === 'loading' &&
-            <Loading message={`Downloading ${currentFound.name} data`} />}
+            <Loading message={`Downloading ${foundTeam?.name} data`} />}
 
             {
-                !current && !!teams.length && (
+                !current && !!teams?.length && (
                     <p><i>Please select team to display information</i></p>
                 )}
 
             {
-                !!teams.length && currentFound && 'stats' in currentFound && (
+                !!teams?.length && foundTeam && 'stats' in foundTeam && (
                     <table className="Statistics__list">
                         <tbody>
 
                         {
-                            currentFound.stats.map(stat => {
+                            foundTeam?.stats?.map(stat => {
                                 return (
                                     <tr key={stat.id} className="draw">
                                         <td>({stat.competition.name})</td>
@@ -79,11 +86,3 @@ const Statistics = ({state: {teams, current}, onAddTeamStats}) => {
         </div>
     );
 };
-
-const mapStateToProps = state => ({state});
-
-const mapDispatchToProps = dispatch => ({
-    onAddTeamStats: (stats, id) => dispatch(addTeamStats(stats, id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Statistics);

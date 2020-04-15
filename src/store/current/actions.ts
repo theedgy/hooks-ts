@@ -1,6 +1,10 @@
-export const SET_CURRENT_TEAM = 'SET_CURRENT_TEAM';
+import {Actions} from "../index";
 
-export const setCurrentTeam = teamId => ({
-    type: SET_CURRENT_TEAM,
+export interface InterfaceActionSetCurrent {
+    type: Actions.SET_CURRENT_TEAM,
+    teamId: number
+}
+export const setCurrentTeam = (teamId: number) => ({
+    type: Actions.SET_CURRENT_TEAM,
     teamId,
 });

@@ -3,26 +3,19 @@ import {apiConnection} from '../apiConnection';
 
 const defaultStatus = 'idle';
 
-export const useApi = (endpoint, data = null) => {
-    const [response, setResponse] = useState(null);
-    const [status, setStatus] = useState(defaultStatus);
+export const useApi = (endpoint: string, data = null) => {
+    const [response, setResponse] = useState<any>(null);
+    const [status, setStatus] = useState<string>(defaultStatus);
 
     useEffect(() => {
         setStatus('loading');
-        apiConnection(endpoint, data).then(r => {
-            console.log(r);
-
-            if (!r.ok) {
-                setStatus(`Error (${r.type}): ${r.statusText}`);
-                return;
-            }
-            return r.json();
-        }).then(r => {
-
+        apiConnection(endpoint, data)
+            .then(r => r.json())
+            .then(r => {
                 setStatus(defaultStatus);
                 setResponse(r);
-            },
-        ).catch(error => setStatus(`Error has been occurred: ${error}`));
+            })
+            .catch(error => setStatus(`Error has been occurred: ${error}`));
     }, [
         endpoint, data,
     ]);

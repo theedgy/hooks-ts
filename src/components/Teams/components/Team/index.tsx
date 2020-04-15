@@ -1,10 +1,22 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {setCurrentTeam} from '../../../../store/current/actions';
+import React, {useContext} from 'react';
+import {AppContext, InterfaceTeam} from "../../../../store";
 
 import './index.scss';
+import {setCurrentTeam} from "../../../../store/current/actions";
 
-const Team = ({team, current, onTeamSelect}) => {
+
+interface InterfaceTeamComponent {
+    team: InterfaceTeam,
+    current?: boolean,
+}
+
+export const Team: React.FC<InterfaceTeamComponent> = ({team, current = false}) => {
+
+    const {dispatch} = useContext(AppContext);
+    const onTeamSelect = (id: number) => {
+        dispatch && dispatch(setCurrentTeam(id));
+    };
+
     return (
         <p className="Team">
             <img src={team.crestUrl}
@@ -18,10 +30,4 @@ const Team = ({team, current, onTeamSelect}) => {
         </p>
     );
 };
-
-const mapDispatchToProps = dispatch => ({
-    onTeamSelect: teamId => dispatch(setCurrentTeam(teamId))
-});
-
-export default connect(null, mapDispatchToProps)(Team);
 
