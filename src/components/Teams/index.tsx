@@ -10,25 +10,27 @@ import {addTeams} from "../../store/teams/actions";
 const defaultStatus = 'idle';
 
 export const Teams = () => {
-    const {state, dispatch} = useContext(AppContext);
+    const [status, setStatus] = useState<string>(defaultStatus);
 
+    const {state, dispatch} = useContext(AppContext);
+    // Need that type of conditional for
+    // typescript to stop yelling about
+    // undefined context value possible
     const teams = state?.teams;
     const current = state?.current;
 
-    const [status, setStatus] = useState<string>(defaultStatus);
-
     useEffect(() => {
-        // Return if data exists in store or is already pulling
+        // Return if data exists in store or is already requesting for it
         if ((teams && !!teams.length) || status === 'success') {
             return;
         }
+
         setStatus('loading');
 
         apiConnection('competitions/2021/teams')
-            .then(r => r.json())
             .then(response => {
                     if (!!response.errorCode) {
-                        setStatus(`${response.errorCode} : ${response.message}`)
+                        setStatus(`${response.errorCode} : ${response.message}`);
                         return;
                     }
                     if (!!dispatch) {
@@ -36,9 +38,7 @@ export const Teams = () => {
                         setStatus('success');
                     }
                 },
-            ).catch(error => setStatus(`${error}`));
-
-        // eslint-disable-next-line
+            );
     }, [teams]);
     return (
         <section className="Teams app-panel">
