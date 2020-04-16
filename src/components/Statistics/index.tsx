@@ -38,14 +38,13 @@ export const Statistics = () => {
         setStatus('loading');
 
         apiConnection(`teams/${current}/matches?status=FINISHED`)
-            .then(r => r.json())
             .then(r => {
                     if (!!dispatch) {
                         dispatch(addTeamStats(r.matches, current));
                         setStatus('idle');
                     }
                 },
-            ).catch(error => setStatus(`${error}`));
+            )
 
     }, [teams, current, foundTeam]);
 
