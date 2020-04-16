@@ -13,9 +13,9 @@ export const Teams = () => {
     const {state, dispatch} = useContext(AppContext);
 
     const teams = state?.teams;
+    const current = state?.current;
 
     const [status, setStatus] = useState<string>(defaultStatus);
-    const current: number = 0;
 
     useEffect(() => {
         // Return if data exists in store or is already pulling
@@ -40,7 +40,6 @@ export const Teams = () => {
 
         // eslint-disable-next-line
     }, [teams]);
-
     return (
         <section className="Teams app-panel">
             <h2>Teams</h2>

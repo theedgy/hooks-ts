@@ -14,7 +14,9 @@ export const Team: React.FC<InterfaceTeamComponent> = ({
   current = false
 }) => {
   const { dispatch } = useContext(AppContext);
+
   const onTeamSelect = (id: number) => {
+      console.log(id)
     dispatch && dispatch(setCurrentTeam(id));
   };
 
@@ -24,7 +26,7 @@ export const Team: React.FC<InterfaceTeamComponent> = ({
 
       <button
         type="button"
-        className={current ? "active" : "Team-link"}
+        className={`Team-link${current ? ' active' : ''}`}
         name={`#${team.shortName}`}
         onClick={() => onTeamSelect(team.id)}
       >
