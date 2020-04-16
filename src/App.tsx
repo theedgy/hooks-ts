@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.scss';
 import {AppStore} from "./store";
 import {Teams} from "./components/Teams";
 import {Statistics} from "./components/Statistics";
+import './App.scss';
 
-function App() {
+export const App = () => {
     return (
         <AppStore>
             <main className="PremierLeague">
@@ -13,6 +13,4 @@ function App() {
             </main>
         </AppStore>
     );
-}
-
-export default App;
+};

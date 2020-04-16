@@ -2,10 +2,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {apiConnection} from '../../services/apiConnection';
 import {Error} from '../Error';
 import {Loading} from '../Loading';
-import './index.scss';
 import {AppContext} from "../../store";
 import {Team} from "./components/Team";
 import {addTeams} from "../../store/teams/actions";
+import './index.scss';
 
 const defaultStatus = 'idle';
 
