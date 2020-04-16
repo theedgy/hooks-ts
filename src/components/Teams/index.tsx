@@ -22,12 +22,16 @@ export const Teams = () => {
         if ((teams && !!teams.length) || status === 'success') {
             return;
         }
-console.log('test')
+        console.log('test')
         setStatus('loading');
 
         apiConnection('competitions/2021/teams')
             .then(r => r.json())
             .then(response => {
+                    if (!!response.errorCode) {
+                        setStatus(`${response.errorCode} : ${response.message}`)
+                        return;
+                    }
                     if (!!dispatch) {
                         dispatch(addTeams(response.teams));
                         setStatus('success');

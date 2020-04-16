@@ -1,5 +1,7 @@
 import {paramStringify} from '../paramsStringify';
 
+const apiKey = process.env.REACT_APP_API_KEY ? process.env.REACT_APP_API_KEY : '';
+
 export const apiConnection = async (endpoint = '', data = null) => {
     const url = data
         ? `/${endpoint}?${paramStringify(data)}`
@@ -8,7 +10,7 @@ export const apiConnection = async (endpoint = '', data = null) => {
     return await fetch(url, {
         method: 'GET',
         headers: {
-            'X-Auth-Token': '78989ff855294ecc83d070f5d9590eb0',
+            'X-Auth-Token': apiKey,
         },
     });
 };
