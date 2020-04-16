@@ -22,7 +22,7 @@ export const Teams = () => {
         if ((teams && !!teams.length) || status === 'success') {
             return;
         }
-
+console.log('test')
         setStatus('loading');
 
         apiConnection('competitions/2021/teams')
