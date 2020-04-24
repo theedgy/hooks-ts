@@ -1,9 +1,6 @@
-import {Actions, InterfaceTeam} from "../index";
-import {InterfaceActionAddStats, InterfaceActionAddTeams} from "./actions";
+import {Action, Actions, initialState, TypeTeam} from "../index";
 
-export const teamsReducer = (state: InterfaceTeam[] = [], action: InterfaceActionAddTeams | InterfaceActionAddStats) => {
-    console.log( state, action);
-    console.log( action.type ,Actions.ADD_TEAM_STATS);
+export const teamsReducer = (state = initialState.state.teams, action: Action): TypeTeam[] => {
     switch (action.type) {
         case Actions.ADD_TEAMS:
             return [...state, ...action.teams];
@@ -14,7 +11,6 @@ export const teamsReducer = (state: InterfaceTeam[] = [], action: InterfaceActio
             if (!found) {
                 return state;
             }
-            // @ts-ignore
             found['stats'] = action.stats;
             return newState;
 

@@ -1,23 +1,16 @@
 import React, {useContext} from "react";
-import {AppContext, InterfaceTeam} from "../../../../store";
+import {AppContext, TypeTeam} from "../../../../store";
 import {setCurrentTeam} from "../../../../store/current/actions";
 
 import "./index.scss";
 
-interface InterfaceTeamComponent {
-    team: InterfaceTeam;
-    current?: boolean;
+type TypeTeamComponent = {
+    team: TypeTeam
 }
 
-export const Team: React.FC<InterfaceTeamComponent> = ({
-                                                           team,
-                                                           current = false
-                                                       }) => {
-    const {dispatch} = useContext(AppContext);
+export const Team: React.FC<TypeTeamComponent> = ({team}) => {
 
-    const onTeamSelect = (id: number) => {
-        dispatch && dispatch(setCurrentTeam(id));
-    };
+    const { state: {current}, dispatch } = useContext(AppContext);
 
     return (
         <p className="Team">
@@ -25,11 +18,11 @@ export const Team: React.FC<InterfaceTeamComponent> = ({
 
             <button
                 type="button"
-                className={`Team-link${current ? ' active' : ''}`}
-                name={`#${team.shortName}`}
-                onClick={() => onTeamSelect(team.id)}
+                className={`Team-link${current === team.id ? ' active' : ''}`}
+                name={team.shortName}
+                onClick={() => dispatch?.(setCurrentTeam(team.id))}
             >
-                {`${team.name}`}
+                {team.name}
             </button>
         </p>
     );

@@ -1,12 +1,12 @@
 import React, {ReactNode, useReducer} from 'react';
 
-import {InterfaceActionAddStats, InterfaceActionAddTeams} from "./teams/actions";
-import {InterfaceActionSetCurrent} from "./current/actions";
+import {TypeActionAddStats, TypeActionAddTeams} from "./teams/actions";
+import {TypeActionSetCurrent} from "./current/actions";
 import {combineReducers} from "../services/combineReducres";
 import {teamsReducer} from "./teams/reducres";
 import {currentReducer} from "./current/reducres";
 
-interface InterfaceAppStore {
+type TypeAppStore = {
     children: ReactNode
 }
 
@@ -16,9 +16,9 @@ export enum Actions {
     SET_CURRENT_TEAM = 'SET_CURRENT_TEAM',
 }
 
-export type Action = InterfaceActionAddTeams | InterfaceActionAddStats | InterfaceActionSetCurrent;
+export type Action = TypeActionAddTeams | TypeActionAddStats | TypeActionSetCurrent;
 
-export interface InterfaceStat {
+export type TypeStat = {
     id: number,
     competition: {
         name: string
@@ -37,31 +37,40 @@ export interface InterfaceStat {
     }
 }
 
-export interface InterfaceTeam {
+export type TypeTeam = {
     id: number,
     name: string,
     crestUrl: string,
     shortName: string,
-    stats?: InterfaceStat[]
+    stats?: TypeStat[]
 }
 
-export type InterfaceState = {
-    teams?: InterfaceTeam[],
-    current?: number
+export type TypeState = {
+    teams: TypeTeam[],
+    current: number
 }
 
-export interface InterfaceAppContext {
-    state: InterfaceState,
+type TypeAppContext = {
+    state: TypeState,
     dispatch: (e: Action) => void,
 }
 
-export const AppContext = React.createContext<Partial<InterfaceAppContext>>({});
+export const initialState: TypeAppContext = {
+    state: {
+        teams: [],
+        current: 0
+    },
+    dispatch: () => alert('Context "dispatch()" function has not been loaded yet, please try again later.')
+};
 
-export const AppStore: React.FC<InterfaceAppStore> = ({children}) => {
+export const AppContext = React.createContext<TypeAppContext>(initialState);
+
+export const AppStore: React.FC<TypeAppStore> = ({children}) => {
+
     const [state, dispatch] = useReducer(combineReducers({
         teams: teamsReducer,
         current: currentReducer
-    }), {});
+    }), initialState);
 
     return (
         <AppContext.Provider value={{state, dispatch}}>

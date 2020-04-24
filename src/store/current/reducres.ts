@@ -1,7 +1,6 @@
-import {Actions} from "../index";
-import {InterfaceActionSetCurrent} from "./actions";
+import {Action, Actions, initialState} from "../index";
 
-export const currentReducer = (state = 0, action: InterfaceActionSetCurrent) => {
+export const currentReducer = (state = initialState.state.current, action: Action) => {
     switch (action.type) {
         case Actions.SET_CURRENT_TEAM:
             return action.teamId;
