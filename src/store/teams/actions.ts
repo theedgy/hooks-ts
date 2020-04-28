@@ -1,21 +1,21 @@
 import {Actions, TypeStat, TypeTeam} from "../index";
 
-export type TypeActionAddStats = {
+export type ActionAddStats = {
     type: Actions.ADD_TEAM_STATS,
     stats: TypeStat[],
     id: number
 }
-export const addTeamStats = (stats: TypeStat[], id: number): TypeActionAddStats => ({
+export const addTeamStats = (stats: TypeStat[], id: number): ActionAddStats => ({
     type: Actions.ADD_TEAM_STATS,
     stats,
     id
 });
 
-export type TypeActionAddTeams = {
+export type ActionAddTeams = {
     type: Actions.ADD_TEAMS,
     teams: TypeTeam[]
 }
-export const addTeams = (teams: TypeTeam[]): TypeActionAddTeams => ({
+export const addTeams = (teams: TypeTeam[]): ActionAddTeams => ({
     type: Actions.ADD_TEAMS,
     teams,
 });

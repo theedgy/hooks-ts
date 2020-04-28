@@ -1,7 +1,7 @@
 import React, {ReactNode, useReducer} from 'react';
 
-import {TypeActionAddStats, TypeActionAddTeams} from "./teams/actions";
-import {TypeActionSetCurrent} from "./current/actions";
+import {ActionAddStats, ActionAddTeams} from "./teams/actions";
+import {ActionSetCurrent} from "./current/actions";
 import {combineReducers} from "../services/combineReducres";
 import {teamsReducer} from "./teams/reducres";
 import {currentReducer} from "./current/reducres";
@@ -16,7 +16,7 @@ export enum Actions {
     SET_CURRENT_TEAM = 'SET_CURRENT_TEAM',
 }
 
-export type Action = TypeActionAddTeams | TypeActionAddStats | TypeActionSetCurrent;
+export type Action = ActionAddTeams | ActionAddStats | ActionSetCurrent;
 
 export type TypeStat = {
     id: number,
